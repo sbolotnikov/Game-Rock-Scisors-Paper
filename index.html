@@ -14,6 +14,7 @@
         .Blackclass {
             color: red;
         }
+
         .Transclass {
             color: transparent;
         }
@@ -30,6 +31,7 @@
     <script>
         var arr = ["Rock", "Scissors", "Paper"];
         var PlayerClick = [0, 0];
+        var PlayComp = false;
         function AskName(playernum) {
             var par1 = prompt("Enter your Name Please");
             document.getElementById("PlayerName" + playernum).innerHTML = par1;
@@ -37,8 +39,13 @@
 
         }
         function SetChoice(playernum, choice) {
-            document.getElementById("PlayerChoiceValue" + playernum).innerHTML = arr[choice - 1];
+            document.getElementById("PlayerChoiceValue" + playernum).innerText = arr[choice - 1];
             PlayerClick[playernum - 1] = 1;
+            if (PlayComp) {
+                document.getElementById("PlayerChoiceValue1").innerText = arr[choice - 1];
+                document.getElementById("PlayerChoiceValue2").innerText = arr[Math.floor(Math.random() * 3)];
+                PlayerClick[1] = 1;
+            }
             document.getElementById("PlayerChoiceValue1").setAttribute("class", "Transclass");
             document.getElementById("PlayerChoiceValue2").setAttribute("class", "Transclass");
             if ((PlayerClick[0] === 1) && (PlayerClick[1] === 1)) {
@@ -76,15 +83,31 @@
             document.getElementById("PlayerWin1").innerHTML = 0;
             document.getElementById("PlayerWin2").innerHTML = 0;
         }
+        function ChkComp() {
+            if (!PlayComp) {
+                document.getElementById("PlayerName2").innerText = "Computer";
+                document.getElementById("PlayerName-2").innerText = "Computer";
+                document.getElementById("BtnPlayer2").disabled = true;
+                document.getElementById("BtnP").disabled = true;
+                document.getElementById("BtnS").disabled = true;
+                document.getElementById("BtnR").disabled = true;
+                PlayComp = true;
+            }
+            else {
+                document.getElementById("PlayerName2").innerText = "Player2";
+                document.getElementById("BtnPlayer2").disabled = false;
+                document.getElementById("BtnP").disabled = false;
+                document.getElementById("BtnS").disabled = false;
+                document.getElementById("BtnR").disabled = false;
+                PlayComp = false;
+            }
+        }
     </script>
     <main>
         <section>
             <figure>
                 <h2>Game Scissors Rock Paper</h2>
             </figure>
-            <div class="col-4">
-
-            </div>
             <div class="row">
                 <div class="col-6">
                     <h3>Name of the first Player: <span id="PlayerName1">Player1</span> </h3>
@@ -96,7 +119,7 @@
 
                         </div>
                         <div class="col-4">
-                            <Button onclick="SetChoice(1,2)">Scissors</Button>
+                            <button onclick="SetChoice(1,2)">Scissors</button>
 
                         </div>
                         <div class="col-4">
@@ -107,20 +130,28 @@
                     <h3> Your Choice is: <span id="PlayerChoiceValue1"></span> </h3>
                 </div>
                 <div class="col-6">
-                    <h3>Name of the first Player: <span id="PlayerName2">Player2</span> </h3>
-                    <button id="BtnPlayer2" onclick="AskName(2)"> Edit</button>
+                    <h3>Name of the second Player: <span id="PlayerName2">Player2</span> </h3>
+                    <div class="row">
+                        <div class="col-6">
+                            <button id="BtnPlayer2" onclick="AskName(2)"> Edit</button>
+                        </div>
+                        <div class="col-6">
+                            <input type="checkbox" id="ChkComputer" name="Comp" onchange="ChkComp()">
+                            <label for="ChkComputer">Play computer</label>
+                        </div>
+                    </div>
                     <p>Choose one of the following options:</p>
                     <div class="row">
                         <div class="col-4">
-                            <button onclick="SetChoice(2,1)">Rock</button>
+                            <button id="BtnR" onclick="SetChoice(2,1)">Rock</button>
 
                         </div>
                         <div class="col-4">
-                            <Button onclick="SetChoice(2,2)">Scissors</Button>
+                            <button id="BtnS" onclick="SetChoice(2,2)">Scissors</button>
 
                         </div>
                         <div class="col-4">
-                            <button onclick="SetChoice(2,3)">Paper</button>
+                            <button id="BtnP" onclick="SetChoice(2,3)">Paper</button>
 
                         </div>
                     </div>
@@ -140,7 +171,7 @@
                     <h3> Player: <span id="PlayerName-2">Player2</span> wins <span id="PlayerWin2">0</span> times</h3>
                 </div>
             </div>
-            <H2> The winner is: <span id="Winner">___</span></H2>
+            <h2> The winner is: <span id="Winner">___</span></h2>
             <button onclick="ResetFunction()">Reset Score</button>
         </section>
     </main>
